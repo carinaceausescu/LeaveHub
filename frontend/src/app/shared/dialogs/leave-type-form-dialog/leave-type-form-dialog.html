@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Editează tip concediu' : 'Tip concediu nou' }}</h2>
+
+<mat-dialog-content class="dialog-form">
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Denumire</mat-label>
+        <input matInput [ngModel]="name()" (ngModelChange)="name.set($event)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Cod (ex. CO, CM, FP, SPECIAL)</mat-label>
+        <input matInput [ngModel]="code()" (ngModelChange)="code.set($event)">
+    </mat-form-field>
+
+    <mat-checkbox [ngModel]="requiresAttachment()" (ngModelChange)="requiresAttachment.set($event)">
+        Necesită document atașat
+    </mat-checkbox>
+
+    <mat-checkbox [ngModel]="paid()" (ngModelChange)="paid.set($event)">
+        Concediu plătit
+    </mat-checkbox>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Renunță</button>
+    <button mat-flat-button color="primary" (click)="save()">Salvează</button>
+</mat-dialog-actions>

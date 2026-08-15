@@ -1,0 +1,64 @@
+<div class="shell">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+        <mat-icon>event_available</mat-icon>
+        <div>
+            <div class="app-name">Leave Hub</div>
+            <div class="app-subtitle">Gestionare Concedii</div>
+        </div>
+        </div>
+
+        <nav class="sidebar-nav">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+            <mat-icon>person</mat-icon>
+            <span>Angajat</span>
+        </a>
+
+        <a routerLink="/requests/mine" routerLinkActive="active" class="nav-item">
+            <mat-icon>list_alt</mat-icon>
+            <span>Cererile mele</span>
+        </a>
+
+        <a routerLink="/requests/new" routerLinkActive="active" class="nav-item">
+            <mat-icon>add_circle_outline</mat-icon>
+            <span>Cerere nouă</span>
+        </a>
+
+        @if (authService.isManager() || authService.isAdmin()) {
+            <a routerLink="/admin/requests" routerLinkActive="active" class="nav-item">
+            <mat-icon>fact_check</mat-icon>
+            <span>Manager</span>
+            </a>
+
+            <a routerLink="/admin/calendar" routerLinkActive="active" class="nav-item">
+                <mat-icon>calendar_month</mat-icon>
+                <span>Calendar</span>
+            </a>
+        }
+
+        @if (authService.isAdmin()) {
+            <a routerLink="/admin/panel" routerLinkActive="active" class="nav-item">
+            <mat-icon>admin_panel_settings</mat-icon>
+            <span>Administrator</span>
+            </a>
+        }
+        </nav>
+
+        <div class="sidebar-footer">
+        <div class="user-info">
+            <mat-icon>account_circle</mat-icon>
+            <div>
+            <div class="user-name">{{ authService.currentUser()?.name }}</div>
+            <div class="user-email">{{ authService.currentUser()?.email }}</div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="logout()" matTooltip="Delogare">
+            <mat-icon>logout</mat-icon>
+        </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <router-outlet />
+    </main>
+</div>

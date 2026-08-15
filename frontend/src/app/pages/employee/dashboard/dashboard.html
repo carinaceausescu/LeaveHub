@@ -1,0 +1,78 @@
+<div class="dashboard">
+    <div class="page-header">
+        <h1>Dashboard Angajat</h1>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+        <div class="stat-value">{{ currentUser()?.availableLeaveDays }}</div>
+        <div class="stat-label">ZILE DISPONIBILE</div>
+        </div>
+        <div class="stat-card">
+        <div class="stat-value">{{ consumedDays() }}</div>
+        <div class="stat-label">ZILE CONSUMATE</div>
+        </div>
+        <div class="stat-card">
+        <div class="stat-value">{{ pendingCount() }}</div>
+        <div class="stat-label">CERERI ÎN AȘTEPTARE</div>
+        </div>
+        <div class="stat-card">
+        <div class="stat-value">{{ approvedCount() }}</div>
+        <div class="stat-label">APROBATE</div>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>Cererile Mele Recente</h2>
+
+        <table mat-table [dataSource]="myRequests()" class="requests-table">
+        <ng-container matColumnDef="leaveType">
+            <th mat-header-cell *matHeaderCellDef>Tip Concediu</th>
+            <td mat-cell *matCellDef="let req">{{ req.leaveType?.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="period">
+            <th mat-header-cell *matHeaderCellDef>Perioada</th>
+            <td mat-cell *matCellDef="let req">{{ req.startDate }} - {{ req.endDate }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="days">
+            <th mat-header-cell *matHeaderCellDef>Zile</th>
+            <td mat-cell *matCellDef="let req">{{ req.workingDays }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let req">
+            <span class="status-badge" [class]="'status-' + req.status.toLowerCase()">
+                {{ statusLabel(req.status) }}
+            </span>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        @if (myRequests().length === 0) {
+        <p class="empty-state">Nu ai nicio cerere de concediu încă.</p>
+        }
+
+        <button mat-raised-button color="primary" class="new-request-btn" routerLink="/requests/new">
+        <mat-icon>add</mat-icon>
+        Cerere Nouă de Concediu
+        </button>
+    </div>
+
+    <div class="section-card">
+        <h2>Sold Anual</h2>
+        <div class="balance-row">
+        <span>Zile de concediu: {{ currentUser()?.availableLeaveDays }}/{{ currentUser()?.annualLeaveDays }} disponibile</span>
+        <div class="progress-bar">
+            <div class="progress-fill"
+                [style.width.%]="(currentUser()!.availableLeaveDays / currentUser()!.annualLeaveDays) * 100">
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

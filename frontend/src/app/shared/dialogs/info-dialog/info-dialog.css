@@ -1,0 +1,6 @@
+mat-dialog-content p {
+    margin: 0;
+    color: #444;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}

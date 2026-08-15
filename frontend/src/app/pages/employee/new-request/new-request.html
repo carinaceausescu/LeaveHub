@@ -1,0 +1,75 @@
+<div class="page-container">
+    <div class="page-header">
+        <h1>Cerere Nouă de Concediu</h1>
+    </div>
+
+    <div class="form-card">
+
+        @if (errorMessage()) {
+            <div class="error-banner">{{ errorMessage() }}</div>
+        }
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tip concediu</mat-label>
+            <mat-select [ngModel]="selectedLeaveTypeId()" (ngModelChange)="selectedLeaveTypeId.set($event)">
+                @for (type of leaveTypes(); track type.leaveTypeId) {
+                    <mat-option [value]="type.leaveTypeId">{{ type.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <div class="date-row">
+            <mat-form-field appearance="outline">
+                <mat-label>Data început</mat-label>
+                <input matInput [matDatepicker]="startPicker"
+                    [ngModel]="startDate()" (ngModelChange)="startDate.set($event)">
+                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Data sfârșit</mat-label>
+                <input matInput [matDatepicker]="endPicker"
+                    [ngModel]="endDate()" (ngModelChange)="endDate.set($event)">
+                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        @if (requiresAttachment()) {
+            <div class="file-upload">
+                <label>
+                    Document justificativ (obligatoriu pentru acest tip de concediu)
+                    <input type="file" (change)="onFileSelected($event)">
+                </label>
+                @if (selectedFile()) {
+                    <span class="file-name">
+                        <mat-icon inline>attach_file</mat-icon>
+                        {{ selectedFile()?.name }}
+                    </span>
+                }
+            </div>
+        } @else {
+            <div class="file-upload optional">
+                <label>
+                    Document justificativ (opțional)
+                    <input type="file" (change)="onFileSelected($event)">
+                </label>
+                @if (selectedFile()) {
+                    <span class="file-name">
+                        <mat-icon inline>attach_file</mat-icon>
+                        {{ selectedFile()?.name }}
+                    </span>
+                }
+            </div>
+        }
+
+        <button mat-flat-button color="primary" [disabled]="submitting()" (click)="submit()">
+            @if (submitting()) {
+                Se trimite...
+            } @else {
+                Trimite cererea
+            }
+        </button>
+    </div>
+</div>

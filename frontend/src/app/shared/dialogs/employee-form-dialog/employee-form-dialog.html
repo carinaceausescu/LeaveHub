@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>{{ isEdit ? 'Editează angajat' : 'Angajat nou' }}</h2>
+
+<mat-dialog-content class="dialog-form">
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nume</mat-label>
+        <input matInput [ngModel]="name()" (ngModelChange)="name.set($event)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [ngModel]="email()" (ngModelChange)="email.set($event)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ isEdit ? 'Parolă nouă (lasă gol pentru a păstra parola actuală)' : 'Parolă' }}</mat-label>
+        <input matInput type="password" [ngModel]="password()" (ngModelChange)="password.set($event)">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Rol</mat-label>
+        <mat-select [ngModel]="role()" (ngModelChange)="role.set($event)">
+            <mat-option value="User">User</mat-option>
+            <mat-option value="Dept_resp">Dept_resp</mat-option>
+            <mat-option value="Admin">Admin</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Departament</mat-label>
+        <mat-select [ngModel]="departmentId()" (ngModelChange)="departmentId.set($event)">
+            <mat-option [value]="null">Fără departament</mat-option>
+            @for (dept of data.departments; track dept.deptId) {
+                <mat-option [value]="dept.deptId">{{ dept.departmentName }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <div class="date-row">
+        <mat-form-field appearance="outline">
+            <mat-label>Zile anuale</mat-label>
+            <input matInput type="number" [ngModel]="annualLeaveDays()" (ngModelChange)="annualLeaveDays.set($event)">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Zile disponibile</mat-label>
+            <input matInput type="number" [ngModel]="availableLeaveDays()" (ngModelChange)="availableLeaveDays.set($event)">
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Renunță</button>
+    <button mat-flat-button color="primary" (click)="save()">Salvează</button>
+</mat-dialog-actions>

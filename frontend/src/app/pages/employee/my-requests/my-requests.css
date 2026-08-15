@@ -1,0 +1,60 @@
+.status-cell {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 28px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.status-draft { background: #eee; color: #666; }
+.status-pending { background: #fff3cd; color: #856404; }
+.status-approved { background: #d4edda; color: #155724; }
+.status-rejected { background: #f8d7da; color: #721c24; }
+.status-cancelled { background: #e2e3e5; color: #383d41; }
+
+.details-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 28px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    background: #e3f2fd;
+    color: #1565c0;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.details-link:hover {
+    background: #bbdefb;
+}
+
+.actions-cell {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.cancel-slot {
+    display: flex;
+    align-items: center;
+    width: 130px;
+}

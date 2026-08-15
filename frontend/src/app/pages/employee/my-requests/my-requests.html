@@ -1,0 +1,72 @@
+<div class="page-container">
+    <div class="page-header">
+        <h1>Cererile mele de concediu</h1>
+    </div>
+
+    @if (loading()) {
+        <p>Se încarcă...</p>
+    } @else if (requests().length === 0) {
+        <div class="empty-state">
+            <mat-icon>event_busy</mat-icon>
+            <p>Nu ai nicio cerere de concediu încă.</p>
+        </div>
+    } @else {
+        <table mat-table [dataSource]="requests()" class="requests-table">
+
+            <ng-container matColumnDef="leaveType">
+                <th mat-header-cell *matHeaderCellDef>Tip Concediu</th>
+                <td mat-cell *matCellDef="let r">{{ r.leaveType.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="period">
+                <th mat-header-cell *matHeaderCellDef>Perioada</th>
+                <td mat-cell *matCellDef="let r">{{ r.startDate }} - {{ r.endDate }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="days">
+                <th mat-header-cell *matHeaderCellDef>Zile</th>
+                <td mat-cell *matCellDef="let r">{{ r.workingDays }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let r">
+                    <div class="status-cell">
+                        <span class="status-badge" [ngClass]="statusClass(r.status)">
+                            {{ statusLabel(r.status) }}
+                        </span>
+                        @if (r.status === 'REJECTED' && hasRejectionComment(r.leaveRequestId)) {
+                            <button class="details-link" (click)="showRejectionComment(r.leaveRequestId)">
+                                Detalii
+                            </button>
+                        }
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Acțiuni</th>
+                <td mat-cell *matCellDef="let r">
+                    <div class="actions-cell">
+                        <button mat-icon-button color="primary" matTooltip="Descarcă PDF" (click)="downloadPdf(r)">
+                            <mat-icon>picture_as_pdf</mat-icon>
+                        </button>
+                        <div class="cancel-slot">
+                            @if (canCancel(r)) {
+                                <button mat-button color="warn"
+                                        [disabled]="cancellingId() === r.leaveRequestId"
+                                        (click)="cancelRequest(r)">
+                                    <mat-icon>cancel</mat-icon>
+                                    Anulează
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    }
+</div>

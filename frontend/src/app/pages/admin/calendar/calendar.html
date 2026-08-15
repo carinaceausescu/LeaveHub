@@ -1,0 +1,57 @@
+<div class="page-container">
+    <div class="page-header">
+        <h1>Calendar Departament</h1>
+
+        @if (departments().length > 1) {
+            <mat-form-field appearance="outline" class="dept-select">
+                <mat-label>Departament</mat-label>
+                <mat-select [ngModel]="selectedDepartmentId()" (ngModelChange)="onDepartmentChange($event)">
+                    @for (dept of departments(); track dept.deptId) {
+                        <mat-option [value]="dept.deptId">{{ dept.departmentName }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        }
+    </div>
+
+    @if (maxAbsent() !== null) {
+        <p class="limit-info">
+            <mat-icon inline>info</mat-icon>
+            Numărul maxim de angajați absenți simultan: <strong>{{ maxAbsent() }}</strong>
+        </p>
+    }
+
+    <div class="month-nav">
+        <button mat-icon-button (click)="previousMonth()">
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+        <h2>{{ monthLabel() | titlecase }}</h2>
+        <button mat-icon-button (click)="nextMonth()">
+            <mat-icon>chevron_right</mat-icon>
+        </button>
+    </div>
+
+    @if (loading()) {
+        <p>Se încarcă...</p>
+    } @else {
+        <div class="calendar-grid">
+            @for (day of weekDays; track day) {
+                <div class="weekday-header">{{ day }}</div>
+            }
+
+            @for (cell of calendarDays(); track cell.date.getTime()) {
+                <div class="day-cell"
+                    [class.other-month]="!cell.inCurrentMonth"
+                    [class.today]="isToday(cell.date)"
+                    [class.over-limit]="cell.isOverLimit">
+                    <div class="day-number">{{ cell.dayNumber }}</div>
+                    <div class="absences">
+                        @for (emp of cell.absentEmployees; track emp.name) {
+                            <div class="absence-chip" [title]="emp.leaveTypeName">{{ emp.name }}</div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

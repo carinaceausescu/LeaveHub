@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Respinge cererea de concediu</h2>
+
+<mat-dialog-content>
+    <p>Comentariul este obligatoriu și va fi vizibil angajatului.</p>
+
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Motivul respingerii</mat-label>
+        <textarea 
+            matInput rows="3"
+            [ngModel]="comment()"
+            (ngModelChange)="comment.set($event)"
+            placeholder="Ex: Perioada coincide cu un proiect critic">
+        </textarea>
+        @if (hasError) {
+            <mat-error>Comentariul este obligatoriu.</mat-error>
+        }
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Renunță</button>
+    <button mat-flat-button color="warn" (click)="confirm()">Respinge cererea</button>
+</mat-dialog-actions>

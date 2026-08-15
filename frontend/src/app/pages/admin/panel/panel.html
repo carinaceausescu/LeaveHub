@@ -1,0 +1,235 @@
+<div class="page-container">
+    <div class="page-header">
+        <h1>Panou Administrator</h1>
+    </div>
+
+    <mat-tab-group>
+
+        <mat-tab label="Angajați">
+            <div class="tab-content">
+                <button mat-flat-button color="primary" (click)="openEmployeeForm(null)">
+                    <mat-icon>add</mat-icon>
+                    Angajat nou
+                </button>
+
+                <table mat-table [dataSource]="employees()" class="data-table">
+
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>Nume</th>
+                        <td mat-cell *matCellDef="let e">{{ e.name }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef>Email</th>
+                        <td mat-cell *matCellDef="let e">{{ e.email }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="role">
+                        <th mat-header-cell *matHeaderCellDef>Rol</th>
+                        <td mat-cell *matCellDef="let e">{{ e.role }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="department">
+                        <th mat-header-cell *matHeaderCellDef>Departament</th>
+                        <td mat-cell *matCellDef="let e">{{ e.department?.departmentName ?? '-' }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="availableLeaveDays">
+                        <th mat-header-cell *matHeaderCellDef>Zile disponibile</th>
+                        <td mat-cell *matCellDef="let e">{{ e.availableLeaveDays }} / {{ e.annualLeaveDays }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Acțiuni</th>
+                        <td mat-cell *matCellDef="let e">
+                            <button mat-icon-button (click)="openEmployeeForm(e)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteEmployee(e)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="employeeColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: employeeColumns;"></tr>
+                </table>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Departamente">
+            <div class="tab-content">
+                <button mat-flat-button color="primary" (click)="openDepartmentForm(null)">
+                    <mat-icon>add</mat-icon>
+                    Departament nou
+                </button>
+
+                <table mat-table [dataSource]="departments()" class="data-table">
+
+                    <ng-container matColumnDef="departmentName">
+                        <th mat-header-cell *matHeaderCellDef>Denumire</th>
+                        <td mat-cell *matCellDef="let d">{{ d.departmentName }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="maxAbsentEmployees">
+                        <th mat-header-cell *matHeaderCellDef>Max. absenți simultan</th>
+                        <td mat-cell *matCellDef="let d">{{ d.maxAbsentEmployees }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Acțiuni</th>
+                        <td mat-cell *matCellDef="let d">
+                            <button mat-icon-button (click)="openDepartmentForm(d)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteDepartment(d)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="departmentColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: departmentColumns;"></tr>
+                </table>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Tipuri de concediu">
+            <div class="tab-content">
+                <button mat-flat-button color="primary" (click)="openLeaveTypeForm(null)">
+                    <mat-icon>add</mat-icon>
+                    Tip concediu nou
+                </button>
+
+                <table mat-table [dataSource]="leaveTypes()" class="data-table">
+
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>Denumire</th>
+                        <td mat-cell *matCellDef="let lt">{{ lt.name }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="code">
+                        <th mat-header-cell *matHeaderCellDef>Cod</th>
+                        <td mat-cell *matCellDef="let lt">{{ lt.code }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="requiresAttachment">
+                        <th mat-header-cell *matHeaderCellDef>Necesită document</th>
+                        <td mat-cell *matCellDef="let lt">{{ lt.requiresAttachment ? 'Da' : 'Nu' }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="paid">
+                        <th mat-header-cell *matHeaderCellDef>Plătit</th>
+                        <td mat-cell *matCellDef="let lt">{{ lt.paid ? 'Da' : 'Nu' }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Acțiuni</th>
+                        <td mat-cell *matCellDef="let lt">
+                            <button mat-icon-button (click)="openLeaveTypeForm(lt)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteLeaveType(lt)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="leaveTypeColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: leaveTypeColumns;"></tr>
+                </table>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Statistici">
+            <div class="tab-content">
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-value">{{ totalRequests() }}</div>
+                        <div class="stat-label">Total cereri</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ approvedCount() }}</div>
+                        <div class="stat-label">Aprobate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ pendingCount() }}</div>
+                        <div class="stat-label">În așteptare</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ totalDaysConsumed() }}</div>
+                        <div class="stat-label">Zile consumate total</div>
+                    </div>
+                </div>
+
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Departament</th>
+                            <th>Nr. cereri</th>
+                            <th>Zile consumate</th>
+                            <th>Grad de ocupare</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (d of departmentStats(); track d.departmentName) {
+                            <tr>
+                                <td>{{ d.departmentName }}</td>
+                                <td>{{ d.requestCount }}</td>
+                                <td>{{ d.approvedDays }}</td>
+                                <td>{{ d.occupancyRate }}%</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Rapoarte">
+            <div class="tab-content">
+                <table class="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Raport</th>
+                            <th>Descriere</th>
+                            <th>Acțiuni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cereri în așteptare</td>
+                            <td>Toate cererile care așteaptă aprobarea</td>
+                            <td>
+                                <button mat-flat-button color="primary" (click)="downloadPendingRequestsReport()">
+                                    <mat-icon>picture_as_pdf</mat-icon>
+                                    Descarcă PDF
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sold per departament</td>
+                            <td>Solduri de zile per angajat/departament</td>
+                            <td>
+                                <button mat-flat-button color="primary" (click)="downloadDepartmentBalanceReport()">
+                                    <mat-icon>picture_as_pdf</mat-icon>
+                                    Descarcă PDF
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Utilizare concedii</td>
+                            <td>Statistici pe tipuri de concediu</td>
+                            <td>
+                                <button mat-flat-button color="primary" (click)="downloadLeaveUsageReport()">
+                                    <mat-icon>picture_as_pdf</mat-icon>
+                                    Descarcă PDF
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
+</div>
